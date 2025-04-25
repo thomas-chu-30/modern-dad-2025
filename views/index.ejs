@@ -1,11 +1,143 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>HTML Input Types Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .input-group {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      input {
+        margin-bottom: 10px;
+      }
+    </style>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <h1>HTML Input Types Test</h1>
+
+    <div class="input-group">
+      <label for="text">text (default)</label>
+      <input type="text" id="text" placeholder="Enter text" />
+    </div>
+
+    <div class="input-group">
+      <label for="password">password</label>
+      <input type="password" id="password" placeholder="Enter password" />
+    </div>
+
+    <div class="input-group">
+      <label for="email">email</label>
+      <input type="email" id="email" placeholder="Enter email" />
+    </div>
+
+    <div class="input-group">
+      <label for="number">number</label>
+      <input type="number" id="number" min="0" max="100" step="1" />
+    </div>
+
+    <div class="input-group">
+      <label for="tel">tel</label>
+      <input type="tel" id="tel" placeholder="Enter phone number" />
+    </div>
+
+    <div class="input-group">
+      <label for="url">url</label>
+      <input type="url" id="url" placeholder="Enter URL" />
+    </div>
+
+    <div class="input-group">
+      <label for="search">search</label>
+      <input type="search" id="search" placeholder="Search..." />
+    </div>
+
+    <div class="input-group">
+      <label for="date">date</label>
+      <input type="date" id="date" />
+    </div>
+
+    <div class="input-group">
+      <label for="datetime-local">datetime-local</label>
+      <input type="datetime-local" id="datetime-local" />
+    </div>
+
+    <div class="input-group">
+      <label for="time">time</label>
+      <input type="time" id="time" />
+    </div>
+
+    <div class="input-group">
+      <label for="week">week</label>
+      <input type="week" id="week" />
+    </div>
+
+    <div class="input-group">
+      <label for="month">month</label>
+      <input type="month" id="month" />
+    </div>
+
+    <div class="input-group">
+      <label for="color">color</label>
+      <input type="color" id="color" />
+    </div>
+
+    <div class="input-group">
+      <label for="range">range</label>
+      <input type="range" id="range" min="0" max="100" />
+    </div>
+
+    <div class="input-group">
+      <label for="file">file</label>
+      <input type="file" id="file" />
+    </div>
+
+    <div class="input-group">
+      <label for="checkbox">checkbox</label>
+      <input type="checkbox" id="checkbox" />
+    </div>
+
+    <div class="input-group">
+      <label for="radio">radio</label>
+      <input type="radio" id="radio" name="radio-group" />
+    </div>
+
+    <div class="input-group">
+      <label for="hidden">hidden (not visible)</label>
+      <input type="hidden" id="hidden" value="hidden value" />
+    </div>
+
+    <div class="input-group">
+      <label for="submit">submit</label>
+      <input type="submit" value="Submit" />
+    </div>
+
+    <div class="input-group">
+      <label for="reset">reset</label>
+      <input type="reset" value="Reset" />
+    </div>
+
+    <div class="input-group">
+      <label for="button">button</label>
+      <input type="button" value="Click me" />
+    </div>
+
+    <div class="input-group">
+      <label for="image">image</label>
+      <input type="image" src="https://via.placeholder.com/100x30" alt="Submit" />
+    </div>
   </body>
 </html>
