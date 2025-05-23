@@ -2,10 +2,64 @@
 <html>
   <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+    <p>Qdrant URL: <%= qdrantUrl %></p>
+    <p>Qdrant API Key: <%= qdrantApiKey %></p>
+    <p>ChatGPT API Key: <%= openAiApiKey %></p>
+
+    <button id="testConnection">Test Connection</button>
+    <div id="errorMessage" style="color: red; margin-top: 10px; display: none"></div>
+    <div id="successMessage" style="color: green; margin-top: 10px; display: none"></div>
+
+    <script>
+      // 顯示錯誤訊息
+      function showError(message) {
+        const errorDiv = document.getElementById("errorMessage");
+        errorDiv.textContent = message;
+        errorDiv.style.display = "block";
+        document.getElementById("successMessage").style.display = "none";
+      }
+
+      // 顯示成功訊息
+      function showSuccess(message) {
+        const successDiv = document.getElementById("successMessage");
+        successDiv.textContent = message;
+        successDiv.style.display = "block";
+        document.getElementById("errorMessage").style.display = "none";
+      }
+
+      // 測試連接
+      document.getElementById("testConnection").addEventListener("click", async () => {
+        try {
+          const response = await fetch("/api/vector-store/test-connection", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              qdrantUrl: "<%= qdrantUrl %>",
+              qdrantApiKey: "<%= qdrantApiKey %>",
+              openAiApiKey: "<%= openAiApiKey %>",
+            }),
+          });
+
+          console.log("response =>", response);
+          const data = await response.json();
+
+          if (data.success) {
+            showSuccess(data.message);
+          } else {
+            showError(data.message);
+          }
+        } catch (error) {
+          showError(error.message);
+          console.error("Error:", error);
+        }
+      });
+    </script>
   </body>
 </html>
