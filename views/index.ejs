@@ -1,11 +1,93 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta charset="utf-8" />
+    <title>語音控制範例</title>
+    <!-- Tailwind CSS CDN -->
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <style>
+      .language-switch {
+        margin: 10px 0;
+      }
+      .language-btn {
+        padding: 5px 10px;
+        margin: 0 5px;
+        cursor: pointer;
+      }
+      .language-btn.active {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+      }
+    </style>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <h1>請說出你的指令</h1>
+    <p>例如：「打開 YouTube」、「打開 Google」、「打開 Facebook」</p>
+    <div class="language-switch mt-4">
+      <button class="language-btn active" onclick="switchLanguage('zh-TW')">中文</button>
+      <button class="language-btn" onclick="switchLanguage('en-US')">English</button>
+    </div>
+    <button onclick="startListening()">🎤 開始聽</button>
+    <p id="result"></p>
+
+    <script src="/js/speech-recognition.js"></script>
+    <script>
+      // 使用工廠建立語音辨識服務
+      const speechService = SpeechRecognitionFactory.createService("web");
+
+      // 設定結果回調
+      speechService.onResult((transcript, language) => {
+        console.log("transcript", transcript, "language", language);
+        document.getElementById("result").innerText = `辨識結果: ${transcript}`;
+        handleCommand(transcript, language);
+      });
+
+      // 設定錯誤回調
+      // 當語音辨識過程中發生錯誤時，會觸發此回調函數
+      // 例如：無法存取麥克風、語音辨識服務不可用、網路問題等
+      speechService.onError((event) => {
+        console.error("辨識錯誤", event);
+      });
+
+      function startListening() {
+        speechService.start();
+      }
+
+      function switchLanguage(lang) {
+        speechService.setLanguage(lang);
+        // 更新按鈕狀態
+        document.querySelectorAll(".language-btn").forEach((btn) => {
+          btn.classList.remove("active");
+          if (btn.textContent.toLowerCase() === (lang === "zh-TW" ? "中文" : "english")) {
+            btn.classList.add("active");
+          }
+        });
+      }
+
+      function handleCommand(command, language) {
+        console.log(command, language);
+        // 中文指令
+        if (language === "zh-TW") {
+          if (command.includes("打開YouTube")) {
+            window.open("https://www.youtube.com", "_blank");
+          } else if (command.includes("打開Google")) {
+            window.open("https://www.google.com", "_blank");
+          } else {
+            alert("無法辨識指令：" + command);
+          }
+        }
+        // 英文指令
+        else if (language === "en-US") {
+          if (command.toLowerCase().includes("open youtube")) {
+            window.open("https://www.youtube.com", "_blank");
+          } else if (command.toLowerCase().includes("open google")) {
+            window.open("https://www.google.com", "_blank");
+          } else {
+            alert("Unknown command: " + command);
+          }
+        }
+      }
+    </script>
   </body>
 </html>
