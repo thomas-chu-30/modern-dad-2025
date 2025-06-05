@@ -2,10 +2,62 @@
 <html>
   <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+
+    <button id="recordButton">開始錄音</button>
+    <div id="recordingStatus"></div>
+    <audio id="audioPlayback" controls style="display: none"></audio>
+
+    <script>
+      let mediaRecorder;
+      let audioChunks = [];
+      const recordButton = document.getElementById("recordButton");
+      const recordingStatus = document.getElementById("recordingStatus");
+      const audioPlayback = document.getElementById("audioPlayback");
+
+      recordButton.addEventListener("click", async () => {
+        if (mediaRecorder && mediaRecorder.state === "recording") {
+          // 停止錄音
+          mediaRecorder.stop();
+          recordButton.textContent = "開始錄音";
+          recordingStatus.textContent = "錄音已停止";
+        } else {
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+            // 檢查瀏覽器是否支援 MP3
+            const mimeType = MediaRecorder.isTypeSupported("audio/mp3") ? "audio/mp3" : "audio/webm";
+
+            console.log(mimeType);
+            mediaRecorder = new MediaRecorder(stream, {
+              mimeType: mimeType,
+            });
+            audioChunks = [];
+
+            mediaRecorder.addEventListener("dataavailable", (event) => {
+              audioChunks.push(event.data);
+            });
+
+            mediaRecorder.addEventListener("stop", () => {
+              const audioBlob = new Blob(audioChunks, { type: mimeType });
+              const audioUrl = URL.createObjectURL(audioBlob);
+              audioPlayback.src = audioUrl;
+              audioPlayback.style.display = "block";
+            });
+
+            mediaRecorder.start();
+            recordButton.textContent = "停止錄音";
+            recordingStatus.textContent = "正在錄音...";
+          } catch (err) {
+            console.error("無法存取麥克風:", err);
+            recordingStatus.textContent = "無法存取麥克風";
+          }
+        }
+      });
+    </script>
   </body>
 </html>

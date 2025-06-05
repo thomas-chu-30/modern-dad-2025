@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>錄音轉 MP3</title>
+    <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
+    <style>
+      .container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        text-align: center;
+      }
+      button {
+        padding: 10px 20px;
+        margin: 10px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      #status {
+        margin: 20px 0;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>錄音轉 MP3</h1>
+      <button id="startRecord">開始錄音</button>
+      <button id="stopRecord" disabled>停止錄音</button>
+      <div id="status"></div>
+      <div id="audioContainer"></div>
+    </div>
+
+    <script>
+      let mediaRecorder;
+      let audioChunks = [];
+      const startButton = document.getElementById("startRecord");
+      const stopButton = document.getElementById("stopRecord");
+      const status = document.getElementById("status");
+      const audioContainer = document.getElementById("audioContainer");
+
+      startButton.addEventListener("click", async () => {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          mediaRecorder = new MediaRecorder(stream);
+
+          mediaRecorder.ondataavailable = (event) => {
+            audioChunks.push(event.data);
+          };
+
+          mediaRecorder.onstop = async () => {
+            const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+            console.log("轉換前檔案類型:", audioBlob.type);
+            console.log("轉換前檔案大小:", audioBlob.size, "bytes");
+
+            const arrayBuffer = await audioBlob.arrayBuffer();
+            const audioContext = new AudioContext();
+            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+            // 使用 lamejs 轉換為 MP3
+            const mp3encoder = new lamejs.Mp3Encoder(1, audioBuffer.sampleRate, 128);
+            const samples = audioBuffer.getChannelData(0);
+            const sampleBlockSize = 1152;
+            const mp3Data = [];
+
+            for (let i = 0; i < samples.length; i += sampleBlockSize) {
+              const sampleChunk = samples.slice(i, i + sampleBlockSize);
+              const mp3buf = mp3encoder.encodeBuffer(sampleChunk);
+              if (mp3buf.length > 0) {
+                mp3Data.push(mp3buf);
+              }
+            }
+
+            const end = mp3encoder.flush();
+            if (end.length > 0) {
+              mp3Data.push(end);
+            }
+
+            const mp3Blob = new Blob(mp3Data, { type: "audio/mp3" });
+            console.log("轉換後檔案類型:", mp3Blob.type);
+            console.log("轉換後檔案大小:", mp3Blob.size, "bytes");
+
+            const mp3Url = URL.createObjectURL(mp3Blob);
+
+            // 顯示音訊播放器
+            const audio = document.createElement("audio");
+            audio.controls = true;
+            audio.src = mp3Url;
+            audioContainer.innerHTML = "";
+            audioContainer.appendChild(audio);
+
+            // 提供下載連結
+            const downloadLink = document.createElement("a");
+            downloadLink.href = mp3Url;
+            downloadLink.download = "recording.mp3";
+            downloadLink.textContent = "下載 MP3";
+            audioContainer.appendChild(downloadLink);
+          };
+
+          mediaRecorder.start();
+          startButton.disabled = true;
+          stopButton.disabled = false;
+          status.textContent = "正在錄音...";
+        } catch (err) {
+          console.error("錄音錯誤:", err);
+          status.textContent = "錄音失敗: " + err.message;
+        }
+      });
+
+      stopButton.addEventListener("click", () => {
+        mediaRecorder.stop();
+        startButton.disabled = false;
+        stopButton.disabled = true;
+        status.textContent = "處理中...";
+        audioChunks = [];
+      });
+    </script>
+  </body>
+</html>
