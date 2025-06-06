@@ -14,4 +14,8 @@ router.get("/mp3", function (req, res, next) {
   res.render("mp3", { title: "mp3" });
 });
 
+router.get("/aws-transcribe-request", function (req, res, next) {
+  res.render("aws-transcribe-request", { title: "aws-transcribe-request" });
+});
+
 module.exports = router;
