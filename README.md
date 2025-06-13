@@ -1,11 +1,59 @@
-## 2025
+# Bluetooth Battery Level Monitor
 
-紀錄今年一年來的學習過程，包含各種新技術的探索與實作。從藍牙連接、語音辨識到向量資料庫的應用，每個專案都代表著不同的技術挑戰與學習機會。這些專案不僅記錄了技術的進步，也展現了如何將這些技術實際應用到解決問題中。
+這是一個使用 Web Bluetooth API 來監控藍牙裝置電池電量的網頁應用程式。
 
-1. [連接藍牙功能實作](https://github.com/thomas-chu-30/modern-dad-2025/tree/feature/bluetooth)
-2. [input type](https://github.com/thomas-chu-30/modern-dad-2025/tree/feature/input-type)
-3. [socket.io](https://github.com/thomas-chu-30/modern-dad-2025/tree/feat/socket.io-server)
-4. [website 語音](https://github.com/thomas-chu-30/modern-dad-2025/tree/feat/website-sr)
-5. [website 聲音](https://github.com/thomas-chu-30/modern-dad-2025/tree/feat/web-voice)
-6. [向量資料庫](https://github.com/thomas-chu-30/modern-dad-2025/tree/feat/qdrant)
-7. [gemini 語音識別](https://github.com/thomas-chu-30/modern-dad-2025/tree/feat/audio-understanding)
+## 功能特點
+
+- 使用 Web Bluetooth API 連接藍牙裝置
+- 簡潔的使用者介面
+- 即時顯示連接狀態和錯誤訊息
+
+## 技術需求
+
+- 支援 Web Bluetooth API 的瀏覽器（如 Chrome、Edge 等）
+- Node.js 環境
+- 藍牙裝置
+
+## 安裝步驟
+
+1. 克隆專案
+
+```bash
+git clone [repository-url]
+cd [project-directory]
+```
+
+2. 安裝依賴
+
+```bash
+npm install
+```
+
+3. 啟動應用程式
+
+```bash
+npm start
+```
+
+## 使用方式
+
+1. 開啟瀏覽器訪問應用程式
+2. 點擊「Connect Bluetooth Device」按鈕
+3. 在瀏覽器的藍牙裝置選擇視窗中選擇要連接的裝置
+4. 等待連接完成，狀態會顯示在頁面上
+
+## 注意事項
+
+- 請確保您的瀏覽器支援 Web Bluetooth API
+- 使用時需要允許瀏覽器存取藍牙功能
+- 建議使用 HTTPS 或 localhost 環境運行，因為 Web Bluetooth API 需要安全上下文
+
+## 開發環境
+
+- Node.js
+- Express.js
+- EJS 模板引擎
+
+## 授權
+
+MIT License
