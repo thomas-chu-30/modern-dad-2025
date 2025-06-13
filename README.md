@@ -8,3 +8,4 @@
 4. [website 語音](https://github.com/thomas-chu-30/modern-dad-2025/tree/feat/website-sr)
 5. [website 聲音](https://github.com/thomas-chu-30/modern-dad-2025/tree/feat/web-voice)
 6. [向量資料庫](https://github.com/thomas-chu-30/modern-dad-2025/tree/feat/qdrant)
+7. [gemini 語音識別](https://github.com/thomas-chu-30/modern-dad-2025/tree/feat/audio-understanding)
