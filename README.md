@@ -2,7 +2,7 @@
 
 實作 website 語音功能
 
-[如果要作一個語音功能](https://cowcera.netlify.app/blog/2025/09/30/auto-speech-recognition)
+[如果要作一個語音功能](https://cowcera.netlify.app/blog/auto-speech-recognition/)
 
 ## 專案概述
 
